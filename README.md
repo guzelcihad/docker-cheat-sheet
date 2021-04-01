@@ -86,7 +86,7 @@ docker run -p 80:5000 redis
 ```
 
 ### Volume mapping
-This commands mount the var/lib/mysql folder to the /opt/datadir folder which exist in the docker host. 
+This command mounts the var/lib/mysql folder to the /opt/datadir folder which exist in the docker host. 
 ```
 docker run -v /opt/datadir:/var/lib/mysql mysql
 ```
@@ -99,6 +99,11 @@ docker inspect <container-name-or-id>
 ### Container logs
 ```
 docker logs <container-name-or-id>
+```
+
+### Run a command remote machine
+```
+docker -H=remote-docker-engine:2375
 ```
 
 # Docker Images
@@ -124,5 +129,22 @@ docker inspect <container-name-or-id>
 # Docker Compose
 ```
 docker compose up
+```
+
+# Docker Network
+```
+docker network
+```
+Create a new network named wp-mysql-network using the bridge driver. Allocate subnet 182.18.0.1/24. Configure Gateway 182.18.0.1
+
+```
+docker network create --driver bridge --subnet 182.18.0.1/24 --gateway 182.18.0.1 wp-mysql-network
+```
+
+Deploy a mysql database using the mysql:5.6 image and name it mysql-db. Attach it to the newly created network wp-mysql-network
+Set the database password to use db_pass123. The environment variable to set is MYSQL_ROOT_PASSWORD
+
+```
+docker run -d -e MYSQL_ROOT_PASSWORD=db_pass123 --name mysql-db --network wp-mysql-network mysql:5.6
 ```
 
